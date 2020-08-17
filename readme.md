@@ -1,0 +1,1 @@
+- Learning Quasar Framework from [this video](youtube.com/watch?v=GV-D85D9KJQ&feature=emb_logo) for DjangoCities.
