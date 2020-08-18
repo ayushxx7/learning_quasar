@@ -22,7 +22,7 @@
     </q-header>
 
  <q-drawer
-        v-model="drawer"
+        v-model="leftDrawerOpen"
         show-if-above
         :width="250"
         :breakpoint="600"

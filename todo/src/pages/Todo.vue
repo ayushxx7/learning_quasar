@@ -48,14 +48,13 @@
         </q-item-section>
       </q-item>
     </q-list>  
-    <div 
-      v-if="!tasks.length"
-      class="no-tasks absolute-center">
+    <div v-if="!tasks.length">
       <q-icon
+        class="no-tasks absolute-center"
         name="check"
         size="100px"
         color="primary" />
-      <div class="text-h5 text-primary text-center">
+      <div class="text-h5 text-primary text-center absolute-center" style="margin-top:3em">
         All Tasks Completed
       </div>
     </div>
