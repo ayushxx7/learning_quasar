@@ -1,5 +1,23 @@
 <template>
   <q-page class="bg-grey-3 column">
+    <div class="row q-pa-sm bg-primary">
+      <q-input
+        v-model="newTask"
+        @keyup.enter="addTask"
+        class="col"
+        square
+        bg-color="white"
+        filled
+        bottom-slots
+        placeholder="Add Task"
+        dense>
+        <template v-slot:append>
+          <q-btn 
+            @click='addTask'
+            round dense flat icon="add" />
+        </template>
+      </q-input>
+    </div>
     <q-list class="bg-white"
       separator
       bordered>
@@ -38,19 +56,8 @@
 export default {
   data() {
     return {
+      newTask: '',
       tasks: [
-        {
-          title: "Get Oranage",
-          done: false
-        },
-        {
-          title: "Make Juice",
-          done: false
-        },
-        {
-          title: "Drink Juice",
-          done: false
-        },
       ]
     }
   },
@@ -68,6 +75,14 @@ export default {
           color: 'red'
         })
       })
+    },
+    addTask() {
+      console.log('add')
+      this.tasks.push({
+        title: this.newTask,
+        done: false
+      })
+      this.newTask = ''
     }
   }
 }
