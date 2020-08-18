@@ -56,10 +56,20 @@ export default {
   },
   methods: {
     deleteTask(index) {
-      this.tasks.splice(index, 1)
+      this.$q.dialog({
+        title: 'Confirm',
+        message: 'Would you like to Delete?',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        this.tasks.splice(index, 1)
+        this.$q.notify({
+          message: 'Task Deleted',
+          color: 'red'
+        })
+      })
     }
-  },
-  name: 'PageIndex'
+  }
 }
 </script>
 
