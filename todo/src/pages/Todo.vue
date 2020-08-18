@@ -4,11 +4,11 @@
       separator
       bordered>
       <q-item 
-        v-for='task in tasks'
+        v-for='(task, index) in tasks'
         :key="task.title"
         @click='task.done = !task.done'
+        :class="{ 'done bg-blue-1': task.done }"
         clickable
-        :class="{ 'done': task.done }"
         v-ripple>
         <q-item-section avatar>
           <q-checkbox 
@@ -18,6 +18,15 @@
         </q-item-section>
         <q-item-section>
           <q-item-label>{{ task.title }}</q-item-label>
+        </q-item-section>
+        <q-item-section
+          v-if="task.done" side>
+        <q-btn 
+          @click.stop="deleteTask(index)"
+          flat round dense
+          color="primary" 
+          icon="delete"
+          />
         </q-item-section>
       </q-item>
 
@@ -45,15 +54,20 @@ export default {
       ]
     }
   },
+  methods: {
+    deleteTask(index) {
+      this.tasks.splice(index, 1)
+    }
+  },
   name: 'PageIndex'
 }
 </script>
 
-<style>
+<style lang="scss">
 .done {
   .q-item__label {
     text-decoration: line-through;
-
+    color: #bbb;
   }
 }
 </style>
