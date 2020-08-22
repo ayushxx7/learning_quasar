@@ -58,7 +58,7 @@
         <q-img class="absolute-top" src="~assets/future.jpg" style="height: 192px">
           <div class="absolute-bottom bg-transparent">
             <q-avatar size="56px" class="q-mb-sm">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+              <img src="https://s.gravatar.com/avatar/5ab05fe6264cd39accdd313781d31acb?s=80">
             </q-avatar>
             <div class="text-weight-bold">Ayush Mandowara</div>
             <div>@ayushxx7</div>
