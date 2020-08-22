@@ -3,6 +3,7 @@
     <!-- Seach Bar -->
     <div class='col q-pt-lg q-px-md'>
       <q-input 
+        @keyup.enter="getWeatherBySearch"
         filled 
         v-model="search" 
         placeholder="Search" 
@@ -10,11 +11,15 @@
         borderless
         >
         <template v-slot:before>
-          <q-icon name="my_location" />
+          <q-icon 
+            @click="getLocation"
+            name="my_location" />
         </template>
 
         <template v-slot:append>
-          <q-btn round dense flat icon="search" />
+          <q-btn 
+            @click="getWeatherBySearch"
+            round dense flat icon="search" />
         </template>
       </q-input> 
     </div>
@@ -23,20 +28,20 @@
    <template v-if="weatherData">
      <div class="col text-white text-center">
        <div class='text-h4 text-weight-light'>
-         Delhi
+         {{weatherData.name}}
        </div>
        <div class="text-h6 text-weight-light">
-         Rain
+         {{weatherData.weather[0].main}}
        </div>
        <div class="text-h1 text-weight-thin q-my-lg relative-position">
-         <span>8</span>
-         <span class='text-h4 relative-position degree'>&deg;</span>
+         <span>{{Math.round(weatherData.main.temp)}}</span>
+         <span class='text-h4 relative-position degree'>&deg;C</span>
        </div>
      </div>
   
      <!-- Image div -->
      <div class="col text-center">
-       <img src="https://www.fillmurray.com/100/100" alt='Bill'>
+       <img :src="`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`" alt='Bill'>
      </div>
   </template>
   <template v-else>
@@ -44,7 +49,9 @@
       <div class="col text-h2 text-weight-thin">
         Quasar<br>Weather
       </div>
-      <q-btn class='col' flat>
+      <q-btn 
+        @click="getLocation"
+        class='col' flat>
         <q-icon left size="3em" name="my_location" />
         <div>Find my location</div>
       </q-btn>
@@ -60,10 +67,40 @@
 <script>
 export default {
   name: 'PageIndex',
+  methods: {
+    getLocation() {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          console.log('Position:', position)
+          this.lat = position.coords.latitude
+          this.lon = position.coords.longitude
+          this.getWeatherByCoords()
+        }
+      )
+    },
+    getWeatherByCoords() {
+      this.$axios(`${this.apiUrl}?lat=${this.lat}&lon=${this.lon}&appid=${this.apiKey}&units=metric`).
+        then(response => {
+          this.weatherData = response.data
+        })
+
+    },
+    getWeatherBySearch() {
+      this.$axios(`${this.apiUrl}?lat=${this.lat}&lon=${this.lon}&appid=${this.apiKey}&units=metric`).
+        then(response => {
+          this.weatherData = response.data
+        })
+
+    }
+  },
   data() {
     return {
       search: '',
-      weatherData: null
+      weatherData: null,
+      lat: null,
+      lon: null,
+      apiUrl: 'https://api.openweathermap.org/data/2.5/weather',
+      apiKey: '5a7452e418047f7f8ecf2ba5cd7b1c3a'
     }
   }
 
