@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex column">
+  <q-page class="flex column" :class="bgClass">
     <!-- Seach Bar -->
     <div class='col q-pt-lg q-px-md'>
       <q-input 
@@ -67,8 +67,21 @@
 <script>
 export default {
   name: 'PageIndex',
+  computed: {
+    bgClass() {
+      if (this.weatherData) {
+        if (this.weatherData.weather[0].icon.endsWith('n')) {
+          return 'bg-night'
+        }
+        else {
+          return 'bg-day'
+        }
+      }
+    }
+  },
   methods: {
     getLocation() {
+      this.$q.loading.show()
       navigator.geolocation.getCurrentPosition(
         position => {
           console.log('Position:', position)
@@ -79,18 +92,20 @@ export default {
       )
     },
     getWeatherByCoords() {
+      this.$q.loading.show()
       this.$axios(`${this.apiUrl}?lat=${this.lat}&lon=${this.lon}&appid=${this.apiKey}&units=metric`).
         then(response => {
           this.weatherData = response.data
+          this.$q.loading.hide()
         })
-
     },
     getWeatherBySearch() {
-      this.$axios(`${this.apiUrl}?lat=${this.lat}&lon=${this.lon}&appid=${this.apiKey}&units=metric`).
+      this.$q.loading.show()
+      this.$axios(`${this.apiUrl}?q=${this.search}&appid=${this.apiKey}&units=metric`).
         then(response => {
           this.weatherData = response.data
+          this.$q.loading.hide()
         })
-
     }
   },
   data() {
@@ -110,6 +125,10 @@ export default {
 <style lang='sass'>
   .q-page
     background: linear-gradient(to bottom, #136a8a, #267871)
+    &.bg-day
+      background: linear-gradient(to top, #00d2ff, #3a7bd5)
+    &.bg-night
+      background: linear-gradient(to right, #232526, #414345)
   .degree
     top: -44px;
   .skyline
